@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Une petite question 🌿</title>
+
+  <style>
+    :root{
+      --bg1:#fbf7f2;
+      --bg2:#f3efe7;
+      --ink:#2a2a2a;
+      --muted:#6b6b6b;
+      --accent:#b85c6b;   /* rose mûr */
+      --accent2:#7a9a6a;  /* vert sauge */
+      --card:#ffffffcc;
+      --shadow: 0 18px 45px rgba(0,0,0,.10);
+      --radius: 22px;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      color:var(--ink);
+      font-family: ui-serif, "Georgia", "Times New Roman", serif;
+      background:
+        radial-gradient(1000px 600px at 10% 10%, #fff 0%, transparent 55%),
+        radial-gradient(900px 600px at 90% 15%, #fff 0%, transparent 55%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      overflow:hidden;
+    }
+
+    /* Petits éléments “champêtres” discrets */
+    .petals{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.35;
+      background-image:
+        radial-gradient(10px 8px at 20% 30%, rgba(184,92,107,.20) 0 60%, transparent 61%),
+        radial-gradient(11px 9px at 70% 25%, rgba(122,154,106,.18) 0 60%, transparent 61%),
+        radial-gradient(9px 7px at 55% 80%, rgba(184,92,107,.18) 0 60%, transparent 61%),
+        radial-gradient(12px 10px at 85% 75%, rgba(122,154,106,.16) 0 60%, transparent 61%);
+      filter: blur(.2px);
+    }
+
+    .card{
+      width:min(720px, 92vw);
+      background:var(--card);
+      border:1px solid rgba(0,0,0,.06);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:clamp(20px, 4vw, 36px);
+      position:relative;
+      backdrop-filter: blur(6px);
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-size:14px;
+      color:var(--muted);
+      letter-spacing:.2px;
+      margin-bottom:14px;
+    }
+    .dot{
+      width:9px;height:9px;border-radius:50%;
+      background:linear-gradient(180deg, var(--accent), var(--accent2));
+      box-shadow:0 0 0 4px rgba(184,92,107,.12);
+    }
+
+    h1{
+      margin:8px 0 10px;
+      font-size:clamp(28px, 4vw, 44px);
+      line-height:1.05;
+      font-weight:700;
+    }
+    p{
+      margin:0 0 18px;
+      font-size:clamp(16px, 2.1vw, 18px);
+      color:var(--muted);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      line-height:1.5;
+    }
+
+    .frame{
+      position:relative;
+      margin-top:22px;
+      height:150px;
+      border-radius:18px;
+      border:1px dashed rgba(184,92,107,.35);
+      background: linear-gradient(180deg, rgba(255,255,255,.75), rgba(255,255,255,.35));
+      overflow:hidden;
+    }
+
+    .buttons{
+      position:relative;
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:18px;
+      padding:16px;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    button{
+      border:none;
+      border-radius:999px;
+      padding:14px 18px;
+      font-size:16px;
+      cursor:pointer;
+      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+      white-space:nowrap;
+    }
+
+    #yesBtn{
+      background: linear-gradient(180deg, #d86f7f, #b85c6b);
+      color:white;
+      box-shadow: 0 10px 25px rgba(184,92,107,.28);
+    }
+    #yesBtn:hover{ transform: translateY(-1px); }
+
+    #noBtn{
+      background: linear-gradient(180deg, #eef3ee, #e3ebe3);
+      color:#2f3a2f;
+      box-shadow: 0 10px 25px rgba(122,154,106,.18);
+      position:absolute; /* important: on le déplace dans la frame */
+      left:55%;
+      top:50%;
+      transform: translate(-50%,-50%);
+    }
+
+    .result{
+      margin-top:18px;
+      padding:14px 16px;
+      border-radius:16px;
+      background: rgba(122,154,106,.10);
+      border: 1px solid rgba(122,154,106,.20);
+      display:none;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:#2f3a2f;
+    }
+
+    .tiny{
+      margin-top:12px;
+      font-size:13px;
+      color:rgba(0,0,0,.45);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="petals" aria-hidden="true"></div>
+
+  <main class="card">
+    <div class="badge"><span class="dot"></span> petite question (très sérieuse) 🌿</div>
+
+    <h1>Tu veux être ma Valentine ?</h1>
+    <p>
+      Promis, c’est simple : tu dis <b>oui</b>, et on s’offre un moment doux, un peu champêtre,
+      et beaucoup de rires. 🌸
+    </p>
+
+    <div class="frame" id="arena" aria-label="zone des boutons">
+      <div class="buttons">
+        <button id="yesBtn" type="button">Oui 🥰</button>
+        <button id="noBtn" type="button" aria-label="Non">Non 😵</button>
+      </div>
+    </div>
+
+    <div class="result" id="result"></div>
+    <div class="tiny">Astuce : le “Non” a… un fort instinct de survie.</div>
+  </main>
+
+  <script>
+    const arena  = document.getElementById("arena");
+    const noBtn  = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const result = document.getElementById("result");
+
+    function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+
+    function moveNoButton() {
+      const a = arena.getBoundingClientRect();
+      const b = noBtn.getBoundingClientRect();
+
+      // Zone disponible (on garde une marge pour ne pas sortir du cadre)
+      const pad = 12;
+      const minX = pad;
+      const minY = pad;
+      const maxX = a.width  - b.width  - pad;
+      const maxY = a.height - b.height - pad;
+
+      // Nouvelle position aléatoire
+      const x = clamp(Math.random() * maxX, minX, maxX);
+      const y = clamp(Math.random() * maxY, minY, maxY);
+
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top  = `${y}px`;
+      noBtn.style.transform = "translate(0,0)";
+    }
+
+    // “Fuite” quand la souris approche
+    arena.addEventListener("mousemove", (e) => {
+      const a = arena.getBoundingClientRect();
+      const bx = noBtn.offsetLeft + (noBtn.offsetWidth / 2);
+      const by = noBtn.offsetTop  + (noBtn.offsetHeight / 2);
+      const mx = e.clientX - a.left;
+      const my = e.clientY - a.top;
+
+      const dist = Math.hypot(mx - bx, my - by);
+      if (dist < 110) moveNoButton();
+    });
+
+    // Et s’il arrive quand même à cliquer (rare), on refait bouger
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("click", (e) => { e.preventDefault(); moveNoButton(); });
+
+    // Sur mobile : dès qu’on tente d’appuyer, il bouge
+    noBtn.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      moveNoButton();
+    }, { passive:false });
+
+    yesBtn.addEventListener("click", () => {
+      result.style.display = "block";
+      result.innerHTML = "Excellent choix. 🌷<br><b>Rendez-vous validé.</b> Je m’occupe du reste.";
+      // Optionnel: on désactive le “Non” après le oui
+      noBtn.style.display = "none";
+    });
+
+    // Position initiale (un peu différente à chaque chargement)
+    moveNoButton();
+  </script>
+</body>
+</html>
